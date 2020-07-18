@@ -1,0 +1,154 @@
+{% extends 'layout/app.html' %}
+{% block content %}
+
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+
+            <div class="kt-portlet__body kt-portlet__body">
+                <form method="get">
+                    <table>
+                        <tr>
+                            <td>
+                                {{selectDropdown|safe}}
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="q" id="text_search_input" placeholder="Search"
+                                       value="{{ request.GET.q }}"/>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </td>
+                            <td>
+                                <a href="/" class="btn btn-primary">Refresh</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <br/>
+                <table class="table" id="myTable">
+                    <thead>
+                    <tr>
+                        <td>
+                            <form method="GET" align="right" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Search..." name="name" value="{{ request.GET.name }}" style="width:100px;">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="GET" align="right" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Search..." name="email" value="{{ request.GET.email }}" style="width:100px;">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="GET" align="right" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Search..." name="branch" value="{{ request.GET.branch }}" style="width:100px;">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="GET" align="right" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Search..." name="area_name" value="{{ request.GET.area_name }}" style="width:100px;">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="GET" align="right" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Search..." name="extension_no" value="{{ request.GET.extension_no }}" style="width:100px;">
+                            </form>
+                        </td>
+                    </tr>
+                    <tr role="row">
+                        <th class="sorting_desc" tabindex="0" aria-controls="kt_table_1" rowspan="1" colspan="1" style="width: 272.25px;" aria-label="Agent: activate to sort column ascending" aria-sort="descending">Name</th>
+                        <th>Email</th>
+                        <th>Branch</th>
+                        <th>Area Name</th>
+                        <th>Extension No.</th>
+                        <th>Emergency Number</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    {% for emergency in EmergencyDetails %}
+
+                    <tr role="row" class="odd">
+                        <td style="display:none;" id="myinput">{{emergency.id}}></td>
+                        <td class="sorting_1" tabindex="0"><div class="kt-user-card-v2">
+                                    <div class="kt-user-card-v2__pic">
+                                        <div class="kt-badge kt-badge--xl kt-badge--info"><span>{% if emergency.image %}<img src="{{ emergency.image.url }}" alt="image"/> {% endif %}</span></div>
+                                    </div>
+                                    <div class="kt-user-card-v2__details">
+                                        <span class="kt-user-card-v2__name">{{ emergency.name }}</span>
+                                        <a href="#" class="kt-user-card-v2__email kt-link">{{ emergency.branch }}</a>
+                                    </div>
+                                </div></td>
+                        <td><a class="kt-link" href="#">{{ emergency.email }}</a></td>
+                        <td>{{ emergency.branch }}</td>
+                        <td>{{ emergency.contact_name }}</td>
+                        <td>
+                            {{ emergency.extension_number }}&nbsp;
+
+                        </td>
+                        <td><i class="fa fa-genderless text-danger" title="Emergency Number"></i>&nbsp;</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block java_script %}
+
+<script>
+    function delete_emergency_details(url, id) {
+        //alert('i am calling');
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function (result) {
+
+            if (result.value) {
+                $.post(url,
+                    {
+                        id: id,
+                        'csrfmiddlewaretoken': getCookie('csrftoken')
+                    },
+                    function (data, status) {
+
+                        window.location.reload();
+
+                    });
+            }
+        });
+    }
+
+    function make_it_active(url, id) {
+        //alert('i am calling');
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Make it active!'
+        }).then(function (result) {
+
+            if (result.value) {
+                $.post(url,
+                    {
+                        id: id,
+                        'csrfmiddlewaretoken': getCookie('csrftoken')
+                    },
+                    function (data, status) {
+
+                        window.location.reload();
+
+                    });
+            }
+        });
+    }
+</script>
+
+
+{% endblock %}

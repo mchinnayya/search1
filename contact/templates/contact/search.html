@@ -1,0 +1,48 @@
+<table class="table" id="myTable">
+
+    {%for n in name%}
+
+    <tr role="row" class="odd" id="table-tr">
+        <td style="display:none;" id="myinput">{{n.id}}></td>
+        <td class="sorting_1" tabindex="0">
+            <div class="kt-user-card-v2">
+                <div class="kt-user-card-v2__pic">
+                    <div class="kt-badge kt-badge--xl kt-badge--info"><span>{% if n.image %}<img
+                            src="{{ n.image.url }}" alt="image"/> {% endif %}</span></div>
+                </div>
+                <div class="kt-user-card-v2__details" id="user">
+                    <span class="kt-user-card-v2__name">{{ n.name }}</span>
+                    <a href="#" class="kt-user-card-v2__email kt-link">{{ n.branch }}</a>
+                </div>
+            </div>
+        </td>
+        <td><a class="kt-link" href="#">{{ n.email }}</a></td>
+        <td>{{ n.branch }}</td>
+        <td>{{ n.contact_name }}</td>
+        <td class="mybtn">
+            {{ n.extension_number }}&nbsp;
+            <a href="{% url  'emergency:favorite_contact_save' %}" data-toggle="modal"
+               data-target="#favorite_Contact"><i class="fas fa-heart" title="Add Favorite"
+                                                  style="color: red ;width: 35px;height: 35px"></i></a>
+        </td>
+        <td><i class="fa fa-genderless text-danger" title="Emergency Number"></i>&nbsp;</td>
+        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                style="overflow: visible; position: relative; width: 110px;">
+                            <a href="javascript:;"
+                               onclick='make_it_active("{% url "emergency:emeregcy_active" n.id %}")'
+                               title="Make it Active" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="fas fa-sync-alt"></i></a>
+                            <a href="javascript:;"
+                               onclick='delete_emergency_details("{% url "emergency:emergencyDetails_delete" n.id %}")'
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i></a>
+                            <a href="{% url 'emergency:emeregcy_update' n.id %}" title="Edit details"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-edit"></i>
+                            </a>
+                        </span>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
